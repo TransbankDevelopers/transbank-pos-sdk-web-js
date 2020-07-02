@@ -27,11 +27,11 @@ class TransbankPOSWebSocket {
   subscribe() {
     this.stompClient.connect({}, (frame) => {
       this.channels.forEach((channel) => {
+        this.stompClient.unsubscribe("/topic/" + channel);
         this.stompClient.subscribe(
           "/topic/" + channel,
           (result) => {
             let response = JSON.parse(result.body);
-            console.log(response);
             this.response = {
               status: response.success,
               response,
@@ -57,7 +57,7 @@ class TransbankPOSWebSocket {
   validParamsInChannel(channel, params = "") {
     let errorMSG = null;
     if (!this.validChannel(channel)) {
-      errorMSG = "Canal Invalido";
+      errorMSG = "Canal Inválido";
     }
     if (channel === "doSale") {
       if (params["amount"] == undefined || params["ticket"] == undefined) {
@@ -123,7 +123,6 @@ class TransbankPOSWebSocket {
       );
     }
     params = JSON.stringify(params);
-    console.log("JSON PARAMS", params);
     return this.waitingResponse(channel, (params = params), (dict = dict));
   }
 
@@ -137,28 +136,28 @@ class TransbankPOSWebSocket {
       throw new Error("Debe indicar el puerto del POS.");
     }
     await this.send("openPort", portName);
-    return this.response.status;
+    return this.response.status === 'TRUE';
   }
 
   async closePort() {
     await this.send("closePort");
-    return this.response.status;
+    return this.response.status === 'TRUE';
   }
 
   async getKeys() {
     await this.send("getKeys");
-    return this.response.body;
+    return JSON.parse(this.response.body);
   }
 
   async getLastSale() {
     await this.send("getLastSale");
-    return this.response.body;
+    return JSON.parse(this.response.body);
   }
 
   async doSale(amount, ticket) {
     let params = { amount: amount, ticket: ticket };
     await this.send("doSale", params);
-    return this.response.body;
+    return JSON.parse(this.response.body);
   }
 }
 
