@@ -7,44 +7,59 @@ class TransbankPOSWebSocket {
     this.timeout = 45000;
     this.channels = [
       "listPorts",
+      "getPortStatus",
       "openPort",
       "closePort",
       "doSale",
       "getKeys",
       "getLastSale",
     ];
-    this.connected = false;
+    this.isConnected = false;
   }
 
   connect(socketJsUrl = "http://localhost:8080/tbk-sdk-java-websocket") {
     this.socket = new SockJS(socketJsUrl);
     this.stompClient = Stomp.over(this.socket);
-    this.subscribe();
-    this.connected = true;
     this.stompClient.debug = () => {};
+    return this.subscribe();
+  }
+
+  disconnect() {
+    return new Promise((resolve, reject) => {
+      this.stompClient.disconnect(() => {
+        resolve();
+      })
+    });
   }
 
   subscribe() {
-    this.stompClient.connect({}, (frame) => {
-      this.channels.forEach((channel) => {
-        this.stompClient.unsubscribe("/topic/" + channel);
-        this.stompClient.subscribe(
-          "/topic/" + channel,
-          (result) => {
-            let response = JSON.parse(result.body);
-            this.response = {
-              status: response.success,
-              response,
-              body: result.body,
-            };
-            result.ack();
-          },
-          { ack: "client" }
-        );
+    return new Promise((resolve, reject) => {
+      this.stompClient.connect({}, (frame) => {
+        // Connection callback
+        this.isConnected = true;
+        this.channels.forEach((channel) => {
+          this.stompClient.unsubscribe("/topic/" + channel);
+          this.stompClient.subscribe(
+                  "/topic/" + channel,
+                  (result) => {
+                    let response = JSON.parse(result.body);
+                    this.response = {
+                      status: response.success,
+                      response,
+                      body: result.body,
+                    };
+                    result.ack();
+                  },
+                  { ack: "client" }
+          );
+
+          resolve();
+        });
+      }, (error) => {
+        // Error callback
+        reject(error)
       });
     });
-
-    return this;
   }
 
   validChannel(channel) {
@@ -112,7 +127,7 @@ class TransbankPOSWebSocket {
   }
 
   send(channel, params = "", dict = {}) {
-    if (!this.connected) {
+    if (!this.isConnected) {
       throw new Error(
         "Debe conectarse para poder enviar mensajes: Puede conectarse con POS.connect()"
       );
@@ -136,12 +151,12 @@ class TransbankPOSWebSocket {
       throw new Error("Debe indicar el puerto del POS.");
     }
     await this.send("openPort", portName);
-    return this.response.status === 'TRUE';
+    return this.response.status;
   }
 
   async closePort() {
     await this.send("closePort");
-    return this.response.status === 'TRUE';
+    return this.response.status;
   }
 
   async getKeys() {
@@ -151,6 +166,11 @@ class TransbankPOSWebSocket {
 
   async getLastSale() {
     await this.send("getLastSale");
+    return JSON.parse(this.response.body);
+  }
+
+  async getPortStatus() {
+    await this.send("getPortStatus");
     return JSON.parse(this.response.body);
   }
 
