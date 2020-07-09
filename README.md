@@ -1,5 +1,5 @@
 # Transbank SDK Web - Javascript
-Este SDK, junto con [Este servicio Java](https://github.com/TransbankDevelopers/transbank-pos-sdk-web-daemon) permite conectar tu software web (punto de venta, etc) al servicio     
+Este SDK, junto con [Este servicio Cliente](https://github.com/TransbankDevelopers/transbank-pos-sdk-web-client) permite conectar tu software web (punto de venta, etc) al servicio     
 
 ## Instalción
 Para usar este SDK en tu aplicación web, debes instalarlo:
