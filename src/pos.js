@@ -17,7 +17,7 @@ class TransbankPOSWebSocket {
     this.isConnected = false;
   }
 
-  connect(socketJsUrl = "http://localhost:8080/tbk-sdk-java-websocket") {
+  connect(socketJsUrl = "http://localhost:8090/tbk-sdk-java-websocket") {
     this.socket = new SockJS(socketJsUrl);
     this.stompClient = Stomp.over(this.socket);
     this.stompClient.debug = () => {};
