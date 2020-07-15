@@ -1,12 +1,17 @@
 import Stomp from "stompjs";
 import SockJS from "sockjs-client";
 
-class TransbankPOSWebSocket {
+export class TransbankPOSWebSocket {
   constructor() {
     this.timeToRetry = 250;
-    this.timeout = 45000;
+    this.timeout = 90000;
     this.channels = [
       "listPorts",
+      "closeDay",
+      "refund",
+      "getTotals",
+      "setNormalMode",
+      "getDetails",
       "getPortStatus",
       "openPort",
       "closePort",
@@ -138,7 +143,7 @@ class TransbankPOSWebSocket {
       );
     }
     params = JSON.stringify(params);
-    return this.waitingResponse(channel, (params = params), (dict = dict));
+    return this.waitingResponse(channel, params, dict);
   }
 
   async getPorts() {
@@ -156,17 +161,45 @@ class TransbankPOSWebSocket {
 
   async closePort() {
     await this.send("closePort");
-    return this.response.status;
+    return this.response.response;
   }
 
   async getKeys() {
     await this.send("getKeys");
-    return JSON.parse(this.response.body);
+    return this.response.response;
   }
 
   async getLastSale() {
     await this.send("getLastSale");
-    return JSON.parse(this.response.body);
+    return this.response.response;
+  }
+
+  async getTotals() {
+    await this.send("getTotals");
+    return this.response.response;
+  }
+
+  async refund(operationId) {
+    if (operationId === undefined) {
+      throw new Error("Debe indicar el ID de operación");
+    }
+    await this.send("refund", operationId);
+    return this.response.response;
+  }
+
+  async getDetails(printOrPos = false) {
+    await this.send("getDetails", printOrPos);
+    return this.response.response;
+  }
+
+  async closeDay() {
+    await this.send("closeDay");
+    return this.response.response;
+  }
+
+  async setNormalMode() {
+    await this.send("setNormalMode");
+    return this.response.response;
   }
 
   async getPortStatus() {
@@ -182,5 +215,3 @@ class TransbankPOSWebSocket {
 }
 
 export const POS = new TransbankPOSWebSocket();
-
-// import POS from 'transbank-pos-websocket';
