@@ -8,11 +8,17 @@ before_deploy:
   - sh package.sh
 
 deploy:
-  provider: npm
-  skip_cleanup: true
-  email: transbankdevelopers@continuum.cl
-  api_key:
-    secure: Fvc4HzYeREZq+BAs6CyFkTmhjMnMJWepH+6mH12z+Y4lbkUus/xyytOAnvJnfVNY1WYOtP1k+esRI+blpDW93zdcT/AYj58cCLH19t4G1jp2MnSYd0LBE4A4ZomYdls4n/GqYoc+u4N3ajnw/ZLeSwDghjTkU4ToDfKxZKXTRh4RVWPchB14DOe+eTjBI0CZ3Bl7UnWpbPlShMEyYlJlpr2iZupJcUrjA1F7i21nenZOrepgaon5HqbG5ufX7a/xuec3LQb22UYvrAgf7EqFKJdv+zWoFHCPvhmz81x41I9jNELBcoj/mKF9yivKLGHzytOzORvYvOzjSHW6Hvy3MDIUtzMnMFvBJ2y93gE7bUvKdwEy/A0vvYEqi1pBW0nGkX4feA+IeTgARo52UPmrMiAG+1sTILB1/tuTSHEpz1grV5MVwTdb+GCziFqsEViVzWArjL9EE/mvcYrkbrMUhKaqQJGX4GfCbutwTd3MlIoEphRCrCFNQsGtwqmnWc9ePRjjdDguaLYGnMVwUFbgS9NBa8hq1ez2p4+dojLPSJUxyUna7nPFXWg+75US8E82wsPqJfdI0lfg0oqCGm3WzUfESHwJS3RqcNQVqN5vkNldJFC6Z23PLz1wSnEMnXbrsSASu8u7YNHBV1+IW9Mq4AJe4whYBMEvhLCnct0ePZc=
-  on:
-    tags: true
-    repo: TransbankDevelopers/transbank-pos-sdk-web-js
+  - provider: releases
+    api_key:
+      secure: KYLrM5ne4DcXyeT1Cj/7yCeti9WQkfhREU1zUKmRY4u+5PH9WmKZBL6y1rJKRAqE2rr2HzxM+AxutjPF6ibPCqf/01rIlY5Kk/Bh7rV9SfHk2sjA/UqTtShI1kWFoGEF6tVKM8IyQ8ol7I/ZCwoq1dIm7CdDOOxLbvIT7Q/heptYewnCsvElIi7ILebxtwj55Xdvb95TPrZfgdsg5J+1NzHpZNcbXO++txgGPtKpY2ed9XKgF+FvnR6EEetSMtp1onm3hg+rqdQ7Sk0qxlNuOu0Dsovh5/PPrJyd6KtZwLbkS/DjPxd155kUS81RvsWlLr/jlpdzNmHP0lcWb5iUFxQrELHrkQ5USv/WxTP2G3mIr2gmS6is6AqlXhjNsMeOQdKQ1IZtWWj5uxnn3kQtn1oLHjy0hsgdvdTG/mxj9+8bsF3dqJsdVVmL66zn9SQUSzbk8DTGNianvyk/HyR9JS5LbHVyzSBroQHzgcCs9LmMWeUca59y/b/kqR5bfJPW5eQMZA+PvjaAGy/E18gmDPkjzgkzHHkCDL6QuoyQZTsbEzN2cTWyn3HtTrzTrNJlbzpXg2ykC6sXlPS7a1NouwlFFVvPBBLo0vTl9gdFr3vIjB+QbKBNzs903vtwz7w8Q+3ctbHn+EXEuSJjkDYEgt8uVkkXSlLKrTpHJIlieeI=
+    file: dist/pos.js
+    on:
+      repo: TransbankDevelopers/transbank-pos-sdk-web-js
+  - provider: npm
+    skip_cleanup: true
+    email: transbankdevelopers@continuum.cl
+    api_key:
+      secure: Fvc4HzYeREZq+BAs6CyFkTmhjMnMJWepH+6mH12z+Y4lbkUus/xyytOAnvJnfVNY1WYOtP1k+esRI+blpDW93zdcT/AYj58cCLH19t4G1jp2MnSYd0LBE4A4ZomYdls4n/GqYoc+u4N3ajnw/ZLeSwDghjTkU4ToDfKxZKXTRh4RVWPchB14DOe+eTjBI0CZ3Bl7UnWpbPlShMEyYlJlpr2iZupJcUrjA1F7i21nenZOrepgaon5HqbG5ufX7a/xuec3LQb22UYvrAgf7EqFKJdv+zWoFHCPvhmz81x41I9jNELBcoj/mKF9yivKLGHzytOzORvYvOzjSHW6Hvy3MDIUtzMnMFvBJ2y93gE7bUvKdwEy/A0vvYEqi1pBW0nGkX4feA+IeTgARo52UPmrMiAG+1sTILB1/tuTSHEpz1grV5MVwTdb+GCziFqsEViVzWArjL9EE/mvcYrkbrMUhKaqQJGX4GfCbutwTd3MlIoEphRCrCFNQsGtwqmnWc9ePRjjdDguaLYGnMVwUFbgS9NBa8hq1ez2p4+dojLPSJUxyUna7nPFXWg+75US8E82wsPqJfdI0lfg0oqCGm3WzUfESHwJS3RqcNQVqN5vkNldJFC6Z23PLz1wSnEMnXbrsSASu8u7YNHBV1+IW9Mq4AJe4whYBMEvhLCnct0ePZc=
+    on:
+      tags: true
+      repo: TransbankDevelopers/transbank-pos-sdk-web-js
