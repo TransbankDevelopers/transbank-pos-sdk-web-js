@@ -1,3 +1,4 @@
+import "@babel/polyfill";
 import Stomp from "stompjs";
 import SockJS from "sockjs-client";
 
@@ -215,3 +216,4 @@ export class TransbankPOSWebSocket {
 }
 
 export const POS = new TransbankPOSWebSocket();
+export default POS;
