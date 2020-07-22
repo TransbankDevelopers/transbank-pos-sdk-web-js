@@ -33,12 +33,23 @@ POS.connect(ports).then(() => {
 ### Inscrustando un tag script
 Si no usas NPM
 ```html
-<script src="https://unpkg.com/transbank/transbank-sdk-web/lib/pos.js"></script>
+<script src="https://unpkg.com/transbank/transbank-sdk-web@1/dist/pos.js"></script>
 <script>
-  // Próximamente...
+  Transbank.POS.connect().then(function() {
+      console.log('Conectado al cliente')
+      // Puedes usar Transbank.POS.getPorts() para obtener lista de puertos activos en el computador
+      var portName = 'COM1'; // ó /dev/cu.usbmodem0123456789ABCD1, etc
+      Transbank.POS.openPort(portName).then(function(ports) {
+          console.log('Puerto conectado correctamente')
+          Transbank.POS.doSale(1500, 'ticket1234124').then(function(result) {
+              console.log('resultado venta: ', result)
+          });
+      });
+  })
 </script>
 ```
-
+Nota que la URL https://unpkg.com/transbank/transbank-sdk-web@1/dist/pos.js cargará la ultima versión 1.x.x disponible. De esa forma te asegurarás de tener las últimas correcciones y nuevas funcionalidades (retrocompatibles) de manera automática.
+En caso de que quieras definir manualmente la versión instalada, puedes cambiar el `@1` por algo como `@1.1.2`
 
 ## Documentación 
 
