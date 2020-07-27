@@ -33,7 +33,7 @@ POS.connect(ports).then(() => {
 ### Inscrustando un tag script
 Si no usas NPM
 ```html
-<script src="https://unpkg.com/transbank/transbank-sdk-web@1/dist/pos.js"></script>
+<script src="https://unpkg.com/transbank-pos-sdk-web@1/dist/pos.js"></script>
 <script>
   Transbank.POS.connect().then(function() {
       console.log('Conectado al cliente')
