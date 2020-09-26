@@ -1,219 +1,129 @@
-import "@babel/polyfill";
-import Stomp from "stompjs";
-import SockJS from "sockjs-client";
+import "@babel/polyfill"
+import * as io from "socket.io-client"
 
 export class TransbankPOSWebSocket {
-  constructor() {
-    this.timeToRetry = 250;
-    this.timeout = 90000;
-    this.channels = [
-      "listPorts",
-      "closeDay",
-      "refund",
-      "getTotals",
-      "setNormalMode",
-      "getDetails",
-      "getPortStatus",
-      "openPort",
-      "closePort",
-      "doSale",
-      "getKeys",
-      "getLastSale",
-    ];
-    this.isConnected = false;
-  }
-
-  connect(socketJsUrl = "http://localhost:8090/tbk-sdk-java-websocket") {
-    this.socket = new SockJS(socketJsUrl);
-    this.stompClient = Stomp.over(this.socket);
-    this.stompClient.debug = () => {};
-    return this.subscribe();
-  }
-
-  disconnect() {
-    return new Promise((resolve, reject) => {
-      this.stompClient.disconnect(() => {
-        resolve();
-      })
-    });
-  }
-
-  subscribe() {
-    return new Promise((resolve, reject) => {
-      this.stompClient.connect({}, (frame) => {
-        // Connection callback
-        this.isConnected = true;
-        this.channels.forEach((channel) => {
-          this.stompClient.unsubscribe("/topic/" + channel);
-          this.stompClient.subscribe(
-                  "/topic/" + channel,
-                  (result) => {
-                    let response = JSON.parse(result.body);
-                    this.response = {
-                      status: response.success,
-                      response,
-                      body: result.body,
-                    };
-                    result.ack();
-                  },
-                  { ack: "client" }
-          );
-
-          resolve();
-        });
-      }, (error) => {
-        // Error callback
-        reject(error)
-      });
-    });
-  }
-
-  validChannel(channel) {
-    if (this.channels.indexOf(channel) === -1) {
-      return false;
-    }
-    return true;
-  }
-
-  validParamsInChannel(channel, params = "") {
-    let errorMSG = null;
-    if (!this.validChannel(channel)) {
-      errorMSG = "Canal Inválido";
-    }
-    if (channel === "doSale") {
-      if (params["amount"] == undefined || params["ticket"] == undefined) {
-        errorMSG = "Debe indicar el monto y el ticket";
-      }
+    constructor() {
+        this.isConnected = false
+        this.debugEnabled = true
+        this.timeout = 120000
     }
 
-    if (errorMSG !== null) {
-      throw new Error(errorMSG);
-    }
-    return true;
-  }
-
-  disconnect() {
-    if (this.stompClient !== null) {
-      this.stompClient.disconnect();
-      this.stompClient = null;
-    }
-    this.isConnected = false;
-  }
-
-  wait(time) {
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        resolve();
-      }, time);
-    });
-  }
-
-  async waitingResponse(channel, params = "", dict = {}) {
-    this.response = null;
-    let runtime = 0;
-    let timeToRetry = this.timeToRetry;
-    let timeout = this.timeout;
-    let tx = this.stompClient.begin();
-    try {
-      this.stompClient.send("/app/" + channel, { transaction: tx.id }, params);
-      while (this.response === null) {
-        await this.wait(timeToRetry);
-        runtime += timeToRetry;
-        if (runtime > timeout) {
-          throw new Error("Error: Timeout en respuesta de websocket.");
+    debug(...args) {
+        if (this.debugEnabled) {
+            console.log(...args)
         }
-      }
-      tx.commit();
-      return this.response;
-    } catch (error) {
-      tx.abort();
-      throw new Error("Error: " + error.message);
-    } finally {
     }
-  }
 
-  send(channel, params = "", dict = {}) {
-    if (!this.isConnected) {
-      throw new Error(
-        "Debe conectarse para poder enviar mensajes: Puede conectarse con POS.connect()"
-      );
+    async connect(socketIoUrl = "http://localhost:8090") {
+        this.socket = io("http://localhost:8090")
+        this.isConnected = true
+        return true;
     }
-    if (!this.validParamsInChannel(channel, params)) {
-      throw new Error(
-        "Error: Los parametros no son validos para este canal." + channel
-      );
+
+
+    async disconnect() {
+        if (this.socket!==null) {
+            this.socket.close()
+            this.socket = null
+        }
+        this.isConnected = false
+        return true;
     }
-    params = JSON.stringify(params);
-    return this.waitingResponse(channel, params, dict);
-  }
 
-  async getPorts() {
-    await this.send("listPorts");
-    return this.response.response.ports;
-  }
-
-  async openPort(portName) {
-    if (portName === undefined) {
-      throw new Error("Debe indicar el puerto del POS.");
+    wait(time) {
+        return new Promise((resolve) => {
+            setTimeout(() => {
+                resolve()
+            }, time)
+        })
     }
-    await this.send("openPort", portName);
-    return this.response.status;
-  }
 
-  async closePort() {
-    await this.send("closePort");
-    return this.response.response;
-  }
+    send(method, params = "") {
+        return new Promise((resolve, reject) => {
+            if (!this.isConnected && this.socket!==null) {
+                reject("Debe conectarse para poder enviar mensajes: Puede conectarse con POS.connect()")
+                return
+            }
 
-  async getKeys() {
-    await this.send("getKeys");
-    return this.response.response;
-  }
 
-  async getLastSale() {
-    await this.send("getLastSale");
-    return this.response.response;
-  }
+            let timeout = setTimeout(() => {
+                reject("Timeout: We have not received anything from POS on " + (this.timeout / 1000) + " seconds")
+            }, this.timeout)
+            this.socket.once(method + ".response", (data) => {
+                clearTimeout(timeout)
+                if (data.success) {
+                    resolve(data.response)
+                } else {
+                    reject(data.message)
+                }
 
-  async getTotals() {
-    await this.send("getTotals");
-    return this.response.response;
-  }
 
-  async refund(operationId) {
-    if (operationId === undefined) {
-      throw new Error("Debe indicar el ID de operación");
+            })
+
+            this.socket.emit(method, params)
+        })
+
     }
-    await this.send("refund", operationId);
-    return this.response.response;
-  }
 
-  async getDetails(printOrPos = false) {
-    await this.send("getDetails", printOrPos);
-    return this.response.response;
-  }
+    async autoconnect() {
+        return await this.send("autoconnect")
+    }
 
-  async closeDay() {
-    await this.send("closeDay");
-    return this.response.response;
-  }
+    async getPorts() {
+        return await this.send("listPorts")
+    }
 
-  async setNormalMode() {
-    await this.send("setNormalMode");
-    return this.response.response;
-  }
+    async openPort(portName) {
+        if (portName===undefined) {
+            throw new Error("Debe indicar el puerto del POS.")
+        }
+        return await this.send("openPort", {port: portName, baudrate: 115200})
+    }
 
-  async getPortStatus() {
-    await this.send("getPortStatus");
-    return JSON.parse(this.response.body);
-  }
+    async closePort() {
+        return await this.send("closePort")
+    }
 
-  async doSale(amount, ticket) {
-    let params = { amount: amount, ticket: ticket };
-    await this.send("doSale", params);
-    return JSON.parse(this.response.body);
-  }
+    async getKeys() {
+        return await this.send("loadKeys")
+    }
+
+    async getLastSale() {
+        return await this.send("getLastSale")
+    }
+
+    async getTotals() {
+        return await this.send("getTotals")
+    }
+
+    async refund(operationId) {
+        if (operationId===undefined) {
+            throw new Error("Debe indicar el ID de operación")
+        }
+        return await this.send("refund", {operationId})
+    }
+
+    async getDetails(printOrPos = false) {
+        return this.send("salesDetail", {printOrPos})
+    }
+
+    async closeDay() {
+        return await this.send("closeDay")
+    }
+
+    async setNormalMode() {
+        return await this.send("changeToNormalMode")
+    }
+
+    async getPortStatus() {
+        return await this.send("getPortStatus")
+    }
+
+    async doSale(amount, ticket) {
+        let params = { amount: amount, ticket: ticket }
+        return await this.send("sale", params)
+    }
 }
 
-export const POS = new TransbankPOSWebSocket();
-export default POS;
+export const POS = new TransbankPOSWebSocket()
+export default POS
