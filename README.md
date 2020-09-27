@@ -2,10 +2,12 @@
 Este proyecto es parte del SDK Web para POS integrado. 
 Este SDK, junto con [Este servicio Cliente](https://github.com/TransbankDevelopers/transbank-pos-sdk-web-client) permite conectar tu software web (punto de venta, etc) al servicio     
 
+Este README tiene las instrucciones para la versión 2.0 de este SDK. Para la versión 1.0 revisar los tags de este repositorio. 
+
 ## SDK Web POS Integrado
 Este SDK Web consta de dos partes: 
 
-[Cliente](https://github.com/TransbankDevelopers/transbank-pos-sdk-web-client): Este cliente se debe instalar e inicializar en el computador que tendrá el equipo POS conectado físicamente. Al instalar e inicializar este servicio, se creará un servidor de websockets local en el puerto 8090, que permitirá, a través del SDK de javascript, poder enviar y recibir mensajes al equipo POS, de manera simple y transparente. 
+[Agente](https://github.com/TransbankDevelopers/transbank-pos-sdk-web-agent): Este agente es un programa que se debe instalar e inicializar en el computador que tendrá el equipo POS conectado físicamente. Al instalar e inicializar este servicio, se creará un servidor de websockets local en el puerto `8090` que permitirá, a través del [SDK de Javascript](https://github.com/TransbankDevelopers/transbank-pos-sdk-web-js), poder enviar y recibir mensajes del equipo POS, de manera simple y transparente. 
 [SDK Javascript](https://github.com/TransbankDevelopers/transbank-pos-sdk-web-js) **(este repositorio)**: Este SDK se debe instalar en el software de caja (o cualquier software web que presente HTML, CSS y JS en un navegador web). Este SDK entrega una interfaz simple para conectarse con el cliente, de manera que se puedan mandar instrucciones al POS con un API fácil de usar. 
 
 
@@ -33,7 +35,7 @@ POS.connect(ports).then(() => {
 ### Inscrustando un tag script
 Si no usas NPM
 ```html
-<script src="https://unpkg.com/transbank-pos-sdk-web@1/dist/pos.js"></script>
+<script src="https://unpkg.com/transbank-pos-sdk-web@2/dist/pos.js"></script>
 <script>
   Transbank.POS.connect().then(function() {
       console.log('Conectado al cliente')
@@ -48,8 +50,10 @@ Si no usas NPM
   })
 </script>
 ```
-Nota que la URL https://unpkg.com/transbank/transbank-sdk-web@1/dist/pos.js cargará la ultima versión 1.x.x disponible. De esa forma te asegurarás de tener las últimas correcciones y nuevas funcionalidades (retrocompatibles) de manera automática.
-En caso de que quieras definir manualmente la versión instalada, puedes cambiar el `@1` por algo como `@1.1.2`
+Nota que la URL https://unpkg.com/transbank/transbank-sdk-web@2/dist/pos.js cargará la ultima versión 1.x.x disponible. De esa forma te asegurarás de tener las últimas correcciones y nuevas funcionalidades (retrocompatibles) de manera automática.
+En caso de que quieras definir manualmente la versión instalada, puedes cambiar el `@2` por algo como `@2.0.1`
+
+
 
 ## Documentación 
 
@@ -65,7 +69,7 @@ La documentación relevante para usar este SDK es:
 
 ## Información para contribuir y desarrollar este SDK
 
-### Standares
+### Estándares
 
 - Para los commits respetamos las siguientes normas: https://chris.beams.io/posts/git-commit/
 - Usamos ingles, para los mensajes de commit.
