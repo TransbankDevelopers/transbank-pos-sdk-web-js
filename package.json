@@ -5,6 +5,7 @@
   "main": "dist/pos.js",
   "module": "src/pos.js",
   "scripts": {
+    "start": "webpack --watch --config webpack.config.js",
     "build": "webpack --config webpack.config.js",
     "prepublish": "npm run build"
   },

@@ -14,6 +14,10 @@ export class TransbankPOSWebSocket {
         }
     }
 
+    socket() {
+        return this.socket;
+    }
+
     async connect(socketIoUrl = "http://localhost:8090") {
         this.socket = io("http://localhost:8090")
         this.isConnected = true
@@ -28,14 +32,6 @@ export class TransbankPOSWebSocket {
         }
         this.isConnected = false
         return true;
-    }
-
-    wait(time) {
-        return new Promise((resolve) => {
-            setTimeout(() => {
-                resolve()
-            }, time)
-        })
     }
 
     send(method, params = "") {
@@ -56,8 +52,6 @@ export class TransbankPOSWebSocket {
                 } else {
                     reject(data.message)
                 }
-
-
             })
 
             this.socket.emit(method, params)
@@ -119,9 +113,14 @@ export class TransbankPOSWebSocket {
         return await this.send("getPortStatus")
     }
 
-    async doSale(amount, ticket) {
+    async doSale(amount, ticket, callback = null) {
         let params = { amount: amount, ticket: ticket }
-        return await this.send("sale", params)
+        if (typeof callback === 'function') {
+            this.socket.on('sale_status.response', callback)
+        }
+        let response = await this.send("sale", params)
+        this.socket.off('sale_status.response', callback)
+        return response;
     }
 }
 
