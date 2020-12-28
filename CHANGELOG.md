@@ -4,6 +4,10 @@ Todos los cambios notables a este proyecto serán documentados en este archivo.
 El formato está basado en [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 y este proyecto adhiere a [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [2.2.0] - 2020-12-28
+### Added
+- Se añade funcionalidad de venta multicódigo `doMulticodeSale` [PR #6](https://github.com/TransbankDevelopers/transbank-pos-sdk-web-js/pull/6)
+
 ## [2.1.0] - 2020-09-29
 ### Added
 - Add callback to doSale function that is executed when status messages are received
