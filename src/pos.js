@@ -80,8 +80,12 @@ export class TransbankPOSWebSocket {
         return await this.send("closePort")
     }
 
-    async getKeys() {
+    async loadKeys() {
         return await this.send("loadKeys")
+    }
+
+    async getKeys() { // Alias
+        return this.loadKeys();
     }
 
     async getLastSale() {
