@@ -8,9 +8,9 @@ then
    TRAVIS_TAG='1.0.0'
 fi
 
-FILE1="package.json"
+PACKAGE_FILE="package.json"
 
-sed -i.bkp 's/  "version": "1.0.0",/  "version": "'"${TRAVIS_TAG#"v"}"'",/g' "$FILE1"
+sed -i.bkp 's/  "version": "1.0.0",/  "version": "'"${TRAVIS_TAG#"v"}"'",/g' "$PACKAGE_FILE"
 
 npm run build
 
