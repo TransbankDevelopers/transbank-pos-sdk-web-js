@@ -17,10 +17,10 @@
   "author": "Gonzalo De Spírito <gonzalo.despirito@continuum.cl>",
   "license": "BSD-3-Clause",
   "dependencies": {
-    "@babel/polyfill": "^7.10.4",
+    "@babel/polyfill": "^7.12.1",
     "core-js": "^3.8.1",
-    "socket.io-client": "^2.3.0",
-    "sockjs-client": "^1.4.0",
+    "socket.io-client": "^2.3.1",
+    "sockjs-client": "^1.5.0",
     "stompjs": "^2.3.3"
   },
   "devDependencies": {
