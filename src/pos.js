@@ -64,6 +64,10 @@ export class TransbankPOSWebSocket {
     async autoconnect() {
         return await this.send("autoconnect")
     }
+    
+    async poll() {
+        return await this.send("poll")
+    }
 
     async getPorts() {
         return await this.send("listPorts")
