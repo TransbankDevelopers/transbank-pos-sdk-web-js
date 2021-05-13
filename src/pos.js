@@ -23,6 +23,16 @@ export class TransbankPOSWebSocket {
     async connect(socketIoUrl = "http://localhost:8090") {
         this.socket = io("http://localhost:8090")
         this.isConnected = true
+
+        this.socket.on("connect", () => {
+            this.isConnected = true;
+        });
+
+        this.socket.on("disconnect", (reason) => {
+            console.log(reason);
+            this.isConnected = false;
+        });
+
         return true;
     }
 
