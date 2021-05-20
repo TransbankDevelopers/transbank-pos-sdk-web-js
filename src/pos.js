@@ -126,7 +126,6 @@ export class TransbankPOSWebSocket {
     }
 
     async getDetails(printOnPos = false) {
-        console.log(printOnPos)
         return this.send("salesDetail", {printOnPos})
     }
 
