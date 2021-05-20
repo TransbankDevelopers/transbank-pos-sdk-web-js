@@ -61,11 +61,15 @@ export class TransbankPOSWebSocket {
             let timeout = setTimeout(() => {
                 reject("Timeout: We have not received anything from POS on " + (this.timeout / 1000) + " seconds")
             }, this.timeout)
+
             this.socket.once(eventName, (data) => {
                 clearTimeout(timeout)
                 if (data.success) {
                     resolve(data.response)
                 } else {
+                    if(method === "poll" || method === "changeToNormalMode")
+                        resolve(false)
+                        
                     reject(data.message)
                 }
             })
