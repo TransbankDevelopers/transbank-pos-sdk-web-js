@@ -46,18 +46,22 @@ export class TransbankPOSWebSocket {
         return true;
     }
 
-    send(method, params = "") {
+    send(method, params = {}) {
         return new Promise((resolve, reject) => {
+            let ts = Date.now();
+            let eventName = method + ".response" + ts;
+
             if (!this.isConnected && this.socket!==null) {
                 reject("Debe conectarse para poder enviar mensajes: Puede conectarse con POS.connect()")
                 return
             }
 
+            params.eventName = eventName;
 
             let timeout = setTimeout(() => {
                 reject("Timeout: We have not received anything from POS on " + (this.timeout / 1000) + " seconds")
             }, this.timeout)
-            this.socket.once(method + ".response", (data) => {
+            this.socket.once(eventName, (data) => {
                 clearTimeout(timeout)
                 if (data.success) {
                     resolve(data.response)
@@ -117,8 +121,9 @@ export class TransbankPOSWebSocket {
         return await this.send("refund", {operationId})
     }
 
-    async getDetails(printOrPos = false) {
-        return this.send("salesDetail", {printOrPos})
+    async getDetails(printOnPos = false) {
+        console.log(printOnPos)
+        return this.send("salesDetail", {printOnPos})
     }
 
     async closeDay() {
