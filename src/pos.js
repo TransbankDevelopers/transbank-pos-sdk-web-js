@@ -1,5 +1,8 @@
 import "core-js/stable";
 import "regenerator-runtime/runtime";
+import {version} from '../package.json';
+
+const axios = require('axios').default;
 
 import * as io from "socket.io-client"
 
@@ -26,6 +29,8 @@ export class TransbankPOSWebSocket {
 
         this.socket.on("connect", () => {
             this.isConnected = true;
+            this.checkAgentVersion();
+            this.checkSDKVersion();
         });
 
         this.socket.on("disconnect", (reason) => {
@@ -36,6 +41,58 @@ export class TransbankPOSWebSocket {
         return true;
     }
 
+    async checkAgentVersion() {
+
+        const url = 'https://api.github.com/repos/TransbankDevelopers/transbank-pos-sdk-web-agent/releases/latest';
+        let tagData;
+
+        axios.get(url).then(response => {
+            tagData = {
+                name: response.data.name,
+                tagVersion : response.data.tag_name
+            }
+
+            this.socket.once('getVersion.response', (data) => {
+                let agentVersion = parseInt(data.replace('.', ''));
+                let serverVersion = parseInt(tagData.tagVersion.replace('.', ''));
+    
+                if(agentVersion < serverVersion) {
+                    console.warn(`The version of the Web Agent is not the latest, the latest version is: ${tagData.tagVersion}. Download the latest version from https://github.com/TransbankDevelopers/transbank-pos-sdk-web-agent`);
+                }
+    
+            });
+    
+            this.socket.emit('getVersion');
+
+        }).catch(error => {
+            console.log(error);
+            return;
+        });
+    }
+
+    async checkSDKVersion() {
+
+        const url = 'https://api.github.com/repos/TransbankDevelopers/transbank-pos-sdk-web-js/releases/latest';
+        let tagData;
+
+        axios.get(url).then(response => {
+            tagData = {
+                name: response.data.name,
+                tagVersion : response.data.tag_name
+            }
+
+            let sdkVersion = parseInt(version.replace('.', ''));
+            let serverVersion = parseInt(tagData.tagVersion.replace('.', ''));
+    
+            if(sdkVersion < serverVersion) {
+                console.warn(`The version of the SDK web is not the latest, the latest version is: ${tagData.tagVersion}. Download the latest version from https://github.com/TransbankDevelopers/transbank-pos-sdk-web-js`);
+            }
+
+        }).catch(error => {
+            console.log(error);
+            return;
+        });
+    }
 
     async disconnect() {
         if (this.socket!==null) {
