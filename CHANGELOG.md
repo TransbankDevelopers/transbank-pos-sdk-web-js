@@ -9,7 +9,7 @@ y este proyecto adhiere a [Semantic Versioning](http://semver.org/spec/v2.0.0.ht
 ### Added
 
 - Se añade eventos para detectar cuando se conecta y desconecta del agente.
-- Se añade comprobación de version del agente y SDK al conectar.
+- Se añade comprobación de versión del agente y SDK al conectar.
 
 ### Changed
 
