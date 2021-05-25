@@ -14,7 +14,7 @@ y este proyecto adhiere a [Semantic Versioning](http://semver.org/spec/v2.0.0.ht
 ### Changed
 
 - Se cambia la respuesta para el comando Poll y changeToNormalMode, en caso de ocurrir un problema retorna false.
-- Se modifica las peticiones al agente, ahora se le pasa por parámetro el nombre de la petición donde debe responder.
+- Se modifica las peticiones al agente. Ahora se le pasa por parámetro el nombre de la petición donde debe responder.
 
 ## [2.2.1] - 2020-12-28
 ### Fixed
