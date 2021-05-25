@@ -29,7 +29,6 @@ export class TransbankPOSWebSocket {
         });
 
         this.socket.on("disconnect", (reason) => {
-            console.log(reason);
             this.isConnected = false;
         });
 
