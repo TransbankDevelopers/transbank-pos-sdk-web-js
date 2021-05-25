@@ -4,6 +4,18 @@ Todos los cambios notables a este proyecto serán documentados en este archivo.
 El formato está basado en [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 y este proyecto adhiere a [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [3.0.0] - 25-05-2021
+
+### Added
+
+- Se añade eventos para detectar cuando se conecta y desconecta del agente.
+- Se añade comprobación de version del agente y SDK al conectar.
+
+### Changed
+
+- Se cambia la respuesta para el comando Poll y changeToNormalMode, en caso de ocurrir un problema retorna false.
+- Se modifica las peticiones al agente, ahora se le pasa por parámetro el nombre de la petición donde debe responder.
+
 ## [2.2.1] - 2020-12-28
 ### Fixed
 - La carga de llaves se llamaba `getKeys()`. Ahora se creó una nueva función con el nombre que corresponde: `loadKeys()`.
