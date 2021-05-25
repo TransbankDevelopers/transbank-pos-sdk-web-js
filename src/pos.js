@@ -1,5 +1,8 @@
 import "core-js/stable";
 import "regenerator-runtime/runtime";
+import {version} from '../package.json';
+
+const axios = require('axios').default;
 
 import * as io from "socket.io-client"
 
@@ -26,6 +29,8 @@ export class TransbankPOSWebSocket {
 
         this.socket.on("connect", () => {
             this.isConnected = true;
+            this.checkAgentVersion();
+            this.checkSDKVersion();
         });
 
         this.socket.on("disconnect", (reason) => {
@@ -35,6 +40,58 @@ export class TransbankPOSWebSocket {
         return true;
     }
 
+    async checkAgentVersion() {
+
+        const url = 'https://api.github.com/repos/TransbankDevelopers/transbank-pos-sdk-web-agent/releases/latest';
+        let tagData;
+
+        axios.get(url).then(response => {
+            tagData = {
+                name: response.data.name,
+                tagVersion : response.data.tag_name
+            }
+
+            this.socket.once('getVersion.response', (data) => {
+                let agentVersion = parseInt(data.replace('.', ''));
+                let serverVersion = parseInt(tagData.tagVersion.replace('.', ''));
+    
+                if(agentVersion < serverVersion) {
+                    console.warn(`The version of the Web Agent is not the latest, the latest version is: ${tagData.tagVersion}. Download the latest version from https://github.com/TransbankDevelopers/transbank-pos-sdk-web-agent`);
+                }
+    
+            });
+    
+            this.socket.emit('getVersion');
+
+        }).catch(error => {
+            console.log(error);
+            return;
+        });
+    }
+
+    async checkSDKVersion() {
+
+        const url = 'https://api.github.com/repos/TransbankDevelopers/transbank-pos-sdk-web-js/releases/latest';
+        let tagData;
+
+        axios.get(url).then(response => {
+            tagData = {
+                name: response.data.name,
+                tagVersion : response.data.tag_name
+            }
+
+            let sdkVersion = parseInt(version.replace('.', ''));
+            let serverVersion = parseInt(tagData.tagVersion.replace('.', ''));
+    
+            if(sdkVersion < serverVersion) {
+                console.warn(`The version of the SDK web is not the latest, the latest version is: ${tagData.tagVersion}. Download the latest version from https://github.com/TransbankDevelopers/transbank-pos-sdk-web-js`);
+            }
+
+        }).catch(error => {
+            console.log(error);
+            return;
+        });
+    }
 
     async disconnect() {
         if (this.socket!==null) {
@@ -45,22 +102,30 @@ export class TransbankPOSWebSocket {
         return true;
     }
 
-    send(method, params = "") {
+    send(method, params = {}) {
         return new Promise((resolve, reject) => {
+            let ts = Date.now();
+            let eventName = method + ".response" + ts;
+
             if (!this.isConnected && this.socket!==null) {
                 reject("Debe conectarse para poder enviar mensajes: Puede conectarse con POS.connect()")
                 return
             }
 
+            params.eventName = eventName;
 
             let timeout = setTimeout(() => {
                 reject("Timeout: We have not received anything from POS on " + (this.timeout / 1000) + " seconds")
             }, this.timeout)
-            this.socket.once(method + ".response", (data) => {
+
+            this.socket.once(eventName, (data) => {
                 clearTimeout(timeout)
                 if (data.success) {
                     resolve(data.response)
                 } else {
+                    if(method === "poll" || method === "changeToNormalMode")
+                        resolve(false)
+                        
                     reject(data.message)
                 }
             })
@@ -116,8 +181,8 @@ export class TransbankPOSWebSocket {
         return await this.send("refund", {operationId})
     }
 
-    async getDetails(printOrPos = false) {
-        return this.send("salesDetail", {printOrPos})
+    async getDetails(printOnPos = false) {
+        return this.send("salesDetail", {printOnPos})
     }
 
     async closeDay() {
