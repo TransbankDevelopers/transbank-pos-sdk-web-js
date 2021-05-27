@@ -4,6 +4,13 @@ Todos los cambios notables a este proyecto serán documentados en este archivo.
 El formato está basado en [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 y este proyecto adhiere a [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [3.1.0] - 27-05-2021
+
+### Added
+
+- Se puede suscribir los eventos port_opened y port_closed, para detectar cuando se cierra y abre el puerto.
+- Se puede suscribir los eventos socket_connected y socket_disconnected, para detectar cuando se conecta y desconecta la conexión al agente.
+
 ## [3.0.0] - 25-05-2021
 
 ### Added
