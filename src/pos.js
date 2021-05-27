@@ -1,3 +1,5 @@
+const EventEmitter = require('events');
+
 import "core-js/stable";
 import "regenerator-runtime/runtime";
 import {version} from '../package.json';
@@ -6,8 +8,9 @@ const axios = require('axios').default;
 
 import * as io from "socket.io-client"
 
-export class TransbankPOSWebSocket {
+export class TransbankPOSWebSocket extends EventEmitter {
     constructor() {
+        super()
         this.isConnected = false
         this.debugEnabled = true
         this.timeout = 120000
@@ -31,11 +34,21 @@ export class TransbankPOSWebSocket {
             this.isConnected = true;
             this.checkAgentVersion();
             this.checkSDKVersion();
+            this.emit('socket_connected');
         });
 
         this.socket.on("disconnect", (reason) => {
             this.isConnected = false;
+            this.emit('socket_disconnected');
         });
+
+        this.socket.on('event.port_opened', (port) => {
+            this.emit('port_opened', port);
+        })
+
+        this.socket.on('event.port_closed', () => {
+            this.emit('port_closed');
+        }) 
 
         return true;
     }
