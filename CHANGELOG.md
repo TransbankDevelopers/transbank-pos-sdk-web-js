@@ -4,6 +4,20 @@ Todos los cambios notables a este proyecto serán documentados en este archivo.
 El formato está basado en [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 y este proyecto adhiere a [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [3.1.1] - 15-09-2021
+
+### Added
+
+- Se añade parámetro para configurar _baudrate_ para el método `autoconnect()` y `openPort()`.
+
+### Changed
+
+- Se elimina la comprobación de versiones.
+
+### Fixed
+
+- Se elimina warning.
+
 ## [3.1.0] - 27-05-2021
 
 ### Added
