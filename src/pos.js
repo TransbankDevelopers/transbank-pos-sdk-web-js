@@ -90,8 +90,8 @@ export class TransbankPOSWebSocket extends EventEmitter {
 
     }
 
-    async autoconnect() {
-        return await this.send("autoconnect")
+    async autoconnect(baudrate = 115200) {
+        return await this.send("autoconnect", {baudrate})
     }
     
     async poll() {
@@ -102,11 +102,11 @@ export class TransbankPOSWebSocket extends EventEmitter {
         return await this.send("listPorts")
     }
 
-    async openPort(portName) {
+    async openPort(portName, baudrate = 115200) {
         if (portName===undefined) {
             throw new Error("Debe indicar el puerto del POS.")
         }
-        return await this.send("openPort", {port: portName, baudrate: 115200})
+        return await this.send("openPort", {port: portName, baudrate})
     }
 
     async closePort() {
