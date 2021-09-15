@@ -91,7 +91,7 @@ export class TransbankPOSWebSocket extends EventEmitter {
     }
 
     async autoconnect(baudrate = 115200) {
-        return await this.send("autoconnect", {baudrate: baudrate})
+        return await this.send("autoconnect", {baudrate})
     }
     
     async poll() {
