@@ -106,7 +106,7 @@ export class TransbankPOSWebSocket extends EventEmitter {
         if (portName===undefined) {
             throw new Error("Debe indicar el puerto del POS.")
         }
-        return await this.send("openPort", {port: portName, baudrate: baudrate})
+        return await this.send("openPort", {port: portName, baudrate})
     }
 
     async closePort() {
