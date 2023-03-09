@@ -1,6 +1,6 @@
 # Transbank SDK Web - Javascript
-Este proyecto es parte del SDK Web para POS integrado. 
-Este SDK, junto con [Este servicio Cliente](https://github.com/TransbankDevelopers/transbank-pos-sdk-web-client) permite conectar tu software web (punto de venta, etc) al servicio     
+Este proyecto es parte del SDK Web para POS integrado.
+Este SDK, junto con [Este agente ](https://github.com/TransbankDevelopers/transbank-pos-sdk-web-agent) permiten conectar tu software web (punto de venta, etc) al POS.
 
 Este README tiene las instrucciones para la versión 2.0 de este SDK. Para la versión 1.0 revisar los tags de este repositorio. 
 
