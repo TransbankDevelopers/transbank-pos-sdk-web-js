@@ -24,7 +24,7 @@ export class TransbankPOSWebSocket extends EventEmitter {
     }
 
     async connect(socketIoUrl = "http://localhost:8090") {
-        this.socket = io("http://localhost:8090")
+        this.socket = io(socketIoUrl)
         this.isConnected = true
 
         this.socket.on("connect", () => {
