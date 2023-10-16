@@ -6,23 +6,20 @@
         content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Demo</title>
-</head>
-<body>
-  Hola
-
   <script src="./dist/pos.js"></script>
   <script>
       Transbank.POS.connect().then(function() {
           console.log('Conectado al cliente')
-          // Pueders usar Transbank.POS.getPorts() para obtener lista de puertos activos
-          Transbank.POS.openPort('/dev/cu.usbmodem0123456789ABCD1').then(function(ports) {
-              console.log('Puerto conectado')
-              Transbank.POS.doSale(1500, 'ticket1234124').then(function(result) {
-                  console.log('resultado venta', result)
-              });
+          Transbank.POS.getPorts().then(function(ports){
+            console.log(ports)
           });
       })
     console.log();
   </script>
+</head>
+<body>
+  Hola
+
+
 </body>
 </html>
