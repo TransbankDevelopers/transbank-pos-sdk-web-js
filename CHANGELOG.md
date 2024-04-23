@@ -4,6 +4,18 @@ Todos los cambios notables a este proyecto serán documentados en este archivo.
 El formato está basado en [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 y este proyecto adhiere a [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [4.0.0] - 23-04-2024
+
+Se cambian funcionalidades. Funciona con la versión 4.0.0 del [Agente Web](https://github.com/TransbankDevelopers/transbank-pos-sdk-web-agent/releases)
+
+### Fixed
+
+- Para conectar al agente, ahora se utiliza correctamente la URL pasada como parámetro al método `connect("socketUrl")`.
+
+### Changed
+
+- La URL a la que se conecta por defecto el método `connect("socketUrl")` ahora es _https://localhost:8090_
+
 ## [3.1.1] - 15-09-2021
 
 ### Added
