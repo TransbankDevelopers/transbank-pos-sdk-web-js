@@ -13,7 +13,7 @@ module.exports = [
         umdNamedDefine: true
     },
     node: {
-        net: 'empty',
+        net: 'empty'
     },
     module: {
         rules: [
