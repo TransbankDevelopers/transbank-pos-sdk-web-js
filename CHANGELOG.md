@@ -6,7 +6,7 @@ y este proyecto adhiere a [Semantic Versioning](http://semver.org/spec/v2.0.0.ht
 
 ## [4.0.0] - 23-04-2024
 
-Se cambian funcionalidades. Funciona con la versión 4.0.0 del [Agente Web](https://github.com/TransbankDevelopers/transbank-pos-sdk-web-agent/releases)
+Funciona con la versión 4.0.0 del [Agente Web](https://github.com/TransbankDevelopers/transbank-pos-sdk-web-agent/releases)
 
 ### Fixed
 
