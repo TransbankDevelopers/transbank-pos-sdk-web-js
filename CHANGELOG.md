@@ -10,7 +10,7 @@ Se cambian funcionalidades. Funciona con la versión 4.0.0 del [Agente Web](http
 
 ### Fixed
 
-- Para conectar al agente, ahora se utiliza correctamente la URL pasada como parámetro al método `connect("socketUrl")`.
+- Se corrige el método para conectar con el agente, ahora se utiliza correctamente la URL pasada como parámetro al método `connect("socketUrl")`. Anteriormente solo conectaba a la URL por defecto.
 
 ### Changed
 
