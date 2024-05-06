@@ -1,0 +1,45 @@
+name: NPM Package Release
+
+on:
+    pull_request:
+      branches:
+        - main
+        - develop
+    release:
+      types: [created]
+jobs:
+    publish:
+        runs-on: ubuntu-latest
+        steps:
+          - name: Use checkout
+            uses: actions/checkout@v4
+            with:
+                fetch-depth: 0
+          - name: Use setup-node
+            uses: actions/setup-node@v4
+            with:
+                node-version: '16.x'
+                registry-url: 'https://registry.npmjs.org'
+          - name: Install dependencies
+            run: npm ci
+          - name: Build
+            run: |
+              chmod +x package.sh
+              ./package.sh
+            env:
+              TRAVIS_TAG: ${{ github.event.release.tag_name }}
+          - name: npm publish
+            if: ${{ github.event_name == 'release' }}
+            run: npm publish
+            env:
+              NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
+          - name: Upload assets
+            if: ${{ github.event_name == 'release' }}
+            uses: actions/upload-release-asset@v1
+            env:
+              GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+            with:
+              upload_url: ${{ github.event.release.upload_url }}
+              asset_path: dist/pos.js
+              asset_name: pos.js
+              asset_content_type: text/javascript
