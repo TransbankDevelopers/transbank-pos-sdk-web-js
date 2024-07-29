@@ -1,4 +1,5 @@
 const path = require('path');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = [
     'source-map'
@@ -24,5 +25,12 @@ module.exports = [
     devtool,
     optimization: {
         minimize: true
-    }
+    },
+    plugins: [
+    new CopyWebpackPlugin({
+      patterns: [
+        { from: 'types', to: '.' }
+      ]
+    })
+  ]
 }));
