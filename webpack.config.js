@@ -12,9 +12,6 @@ module.exports = [
         libraryTarget: 'window',
         umdNamedDefine: true
     },
-    node: {
-        net: 'empty'
-    },
     module: {
         rules: [
             {
