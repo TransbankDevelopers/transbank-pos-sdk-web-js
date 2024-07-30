@@ -1,6 +1,6 @@
 import { EventEmitter } from 'events';
 import type { Socket } from 'socket.io-client';
-import { SaleResponse, LoadKeysResponse, TotalsResponse, RefundResponse, DetailsResponse, CloseResponse, PortStatusResponse } from './responses';
+import { SaleResponse, LoadKeysResponse, TotalsResponse, RefundResponse, DetailsResponse, CloseResponse, PortStatusResponse, IntermediateMessageResponse } from './responses';
 
 export class TransbankPOSWebSocket extends EventEmitter {
     isConnected: boolean;
@@ -47,9 +47,9 @@ export class TransbankPOSWebSocket extends EventEmitter {
 
     getPortStatus(): Promise<PortStatusResponse>;
 
-    doSale(amount: number, ticket: string, callback?: (status: any) => void): Promise<SaleResponse>;
+    doSale(amount: number, ticket: string, callback?: (status: IntermediateMessageResponse) => void): Promise<SaleResponse>;
 
-    doMulticodeSale(amount: number, ticket: string, commerceCode?: string, callback?: (status: any) => void): Promise<SaleResponse>;
+    doMulticodeSale(amount: number, ticket: string, commerceCode?: string, callback?: (status: IntermediateMessageResponse) => void): Promise<SaleResponse>;
 }
 
 export const POS: TransbankPOSWebSocket;
