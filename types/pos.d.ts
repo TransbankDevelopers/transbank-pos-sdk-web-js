@@ -13,7 +13,7 @@ export class TransbankPOSWebSocket extends EventEmitter {
 
     socket(): Socket | null;
 
-    connect(socketIoUrl?: string): Promise<boolean>;
+    connect(socketIoUrl?: string, options?: object): Promise<boolean>;
 
     disconnect(): Promise<boolean>;
 
