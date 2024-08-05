@@ -50,6 +50,10 @@ export class TransbankPOSWebSocket extends EventEmitter {
             this.emit('socket_connection_error', error);
         });
 
+        this.socket.on("reconnect_failed", (error) => {
+            this.emit('socket_connection_failed', error);
+        });
+
         this.socket.on('event.port_opened', (port) => {
             this.emit('port_opened', port);
         })
