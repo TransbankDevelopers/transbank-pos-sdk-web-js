@@ -6,6 +6,15 @@ import "regenerator-runtime/runtime";
 import * as io from "socket.io-client"
 
 export class TransbankPOSWebSocket extends EventEmitter {
+
+    defaultConnectionOptions = {
+        reconnection: true,
+        reconnectionAttempts: 10,
+        reconnectionDelay: 1000,
+        reconnectionDelayMax: 5000,
+        autoConnect: true,
+    }
+
     constructor() {
         super()
         this.isConnected = false
@@ -23,8 +32,8 @@ export class TransbankPOSWebSocket extends EventEmitter {
         return this.socket;
     }
 
-    async connect(socketIoUrl = "https://localhost:8090") {
-        this.socket = io(socketIoUrl)
+    async connect(socketIoUrl = "https://localhost:8090", options = this.defaultConnectionOptions) {
+        this.socket = io(socketIoUrl, options)
         this.isConnected = true
 
         this.socket.on("connect", () => {
