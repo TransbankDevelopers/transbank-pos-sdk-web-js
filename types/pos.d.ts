@@ -2,6 +2,14 @@ import { EventEmitter } from 'events';
 import type { Socket } from 'socket.io-client';
 import { SaleResponse, LoadKeysResponse, TotalsResponse, RefundResponse, DetailsResponse, CloseResponse, PortStatusResponse, IntermediateMessageResponse } from './responses';
 
+export type AgentConnectionOptions = {
+    reconnection?: boolean;
+    reconnectionAttempts?: number;
+    reconnectionDelay?: number;
+    reconnectionDelayMax?: number;
+    autoConnect?: boolean;
+}
+
 export class TransbankPOSWebSocket extends EventEmitter {
     isConnected: boolean;
     debugEnabled: boolean;
@@ -13,7 +21,7 @@ export class TransbankPOSWebSocket extends EventEmitter {
 
     socket(): Socket | null;
 
-    connect(socketIoUrl?: string, options?: object): Promise<boolean>;
+    connect(socketIoUrl?: string, options?: AgentConnectionOptions): Promise<boolean>;
 
     disconnect(): Promise<boolean>;
 
