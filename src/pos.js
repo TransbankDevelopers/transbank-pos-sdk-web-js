@@ -171,18 +171,23 @@ export class TransbankPOSWebSocket extends EventEmitter {
 
     async doSale(amount, ticket, callback = null) {
         let params = { amount: amount, ticket: ticket }
-        if (typeof callback === 'function') {
+
+        if (typeof callback === 'function' && this.socket !== null) {
             this.socket.on('sale_status.response', callback)
         }
+
         let response = await this.send("sale", params)
         this.socket.off('sale_status.response', callback)
         return response;
     }
+
     async doMulticodeSale(amount, ticket, commerceCode = '0', callback = null) {
         let params = { amount: amount, ticket: ticket, commerceCode: commerceCode }
-        if (typeof callback === 'function') {
+
+        if (typeof callback === 'function' && this.socket !== null) {
             this.socket.on('multicode_sale_status.response', callback)
         }
+
         let response = await this.send("multicodeSale", params)
         this.socket.off('multicode_sale_status.response', callback)
         return response;
