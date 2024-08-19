@@ -20,6 +20,7 @@ export class TransbankPOSWebSocket extends EventEmitter {
         this.isConnected = false
         this.debugEnabled = true
         this.timeout = 120000
+        this.socket = null
     }
 
     debug(...args) {
