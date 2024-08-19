@@ -79,7 +79,7 @@ export class TransbankPOSWebSocket extends EventEmitter {
             let ts = Date.now();
             let eventName = method + ".response" + ts;
 
-            if (!this.isConnected && this.socket!==null) {
+            if (!this.isConnected || this.socket == null) {
                 reject("Debe conectarse para poder enviar mensajes: Puede conectarse con POS.connect()")
                 return
             }
