@@ -29,7 +29,7 @@ export class TransbankPOSWebSocket extends EventEmitter {
         }
     }
 
-    socket() {
+    getSocket() {
         return this.socket;
     }
 
