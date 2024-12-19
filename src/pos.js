@@ -3,7 +3,7 @@ const EventEmitter = require('events');
 import "core-js/stable";
 import "regenerator-runtime/runtime";
 
-import * as io from "socket.io-client"
+import { io } from "socket.io-client";
 
 export class TransbankPOSWebSocket extends EventEmitter {
 
