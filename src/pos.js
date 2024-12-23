@@ -9,7 +9,7 @@ export class TransbankPOSWebSocket extends EventEmitter {
         reconnectionAttempts: 10,
         reconnectionDelay: 1000,
         reconnectionDelayMax: 5000,
-        autoConnect: true,
+        autoConnect: true
     }
 
     constructor() {
