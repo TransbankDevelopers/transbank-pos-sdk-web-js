@@ -10,21 +10,21 @@ module.exports = [
       filename: "pos.js",
       library: "Transbank",
       libraryTarget: "commonjs2",
-      umdNamedDefine: true,
+      umdNamedDefine: true
     },
     module: {
       rules: [
-      ],
+      ]
     },
     devtool: "source-map",
     optimization: {
-      minimize: true,
+      minimize: true
     },
     plugins: [
       new CopyWebpackPlugin({
-        patterns: [{ from: "types", to: "." }],
-      }),
-    ],
+        patterns: [{ from: "types", to: "." }]
+      })
+    ]
   },
   {
     mode: "production",
@@ -33,19 +33,19 @@ module.exports = [
       path: path.resolve(__dirname, "dist"),
       filename: "pos.esm.js",
       library: {
-        type: "module",
-      },
+        type: "module"
+      }
     },
     module: {
       rules: [
-      ],
+      ]
     },
     devtool: "source-map",
     optimization: {
-      minimize: true,
+      minimize: true
     },
     experiments: {
-      outputModule: true,
+      outputModule: true
     }
-  },
+  }
 ];
