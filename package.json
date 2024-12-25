@@ -18,7 +18,7 @@
   "license": "BSD-3-Clause",
   "dependencies": {
     "@babel/polyfill": "^7.12.1",
-    "core-js": "^3.17.3",
+    "core-js": "^3.39.0",
     "socket.io-client": "^2.5.0",
     "sockjs-client": "^1.5.2",
     "stompjs": "^2.3.3"
