@@ -1,31 +1,51 @@
-const path = require('path');
+const path = require("path");
+const CopyWebpackPlugin = require("copy-webpack-plugin");
 
 module.exports = [
-    'source-map'
-].map(devtool => ({
-    mode: 'production',
-    entry: './src/pos.js',
+  {
+    mode: "production",
+    entry: "./src/pos.js",
     output: {
-        path: path.resolve(__dirname, 'dist'),
-        filename: 'pos.js',
-        library: 'Transbank',
-        libraryTarget: 'window',
-        umdNamedDefine: true
-    },
-    node: {
-        net: 'empty'
+      path: path.resolve(__dirname, "dist"),
+      filename: "pos.js",
+      library: "Transbank",
+      libraryTarget: "commonjs2",
+      umdNamedDefine: true
     },
     module: {
-        rules: [
-            {
-                test: /\.(js)$/,
-                exclude: /(node_modules|bower_components)/,
-                use: ['babel-loader']
-            }
-        ]
+      rules: [
+      ]
     },
-    devtool,
+    devtool: "source-map",
     optimization: {
-        minimize: true
+      minimize: true
+    },
+    plugins: [
+      new CopyWebpackPlugin({
+        patterns: [{ from: "types", to: "." }]
+      })
+    ]
+  },
+  {
+    mode: "production",
+    entry: "./src/pos.js",
+    output: {
+      path: path.resolve(__dirname, "dist"),
+      filename: "pos.esm.js",
+      library: {
+        type: "module"
+      }
+    },
+    module: {
+      rules: [
+      ]
+    },
+    devtool: "source-map",
+    optimization: {
+      minimize: true
+    },
+    experiments: {
+      outputModule: true
     }
-}));
+  }
+];

@@ -1,16 +1,23 @@
 const EventEmitter = require('events');
 
-import "core-js/stable";
-import "regenerator-runtime/runtime";
-
-import * as io from "socket.io-client"
+import { io } from "socket.io-client";
 
 export class TransbankPOSWebSocket extends EventEmitter {
+
+    defaultConnectionOptions = {
+        reconnection: true,
+        reconnectionAttempts: 10,
+        reconnectionDelay: 1000,
+        reconnectionDelayMax: 5000,
+        autoConnect: true
+    }
+
     constructor() {
         super()
         this.isConnected = false
         this.debugEnabled = true
         this.timeout = 120000
+        this.socket = null
     }
 
     debug(...args) {
@@ -19,13 +26,12 @@ export class TransbankPOSWebSocket extends EventEmitter {
         }
     }
 
-    socket() {
+    getSocket() {
         return this.socket;
     }
 
-    async connect(socketIoUrl = "https://localhost:8090") {
-        this.socket = io(socketIoUrl)
-        this.isConnected = true
+    async connect(socketIoUrl = "https://localhost:8090", options = this.defaultConnectionOptions) {
+        this.socket = io(socketIoUrl, options)
 
         this.socket.on("connect", () => {
             this.isConnected = true;
@@ -35,6 +41,14 @@ export class TransbankPOSWebSocket extends EventEmitter {
         this.socket.on("disconnect", (reason) => {
             this.isConnected = false;
             this.emit('socket_disconnected');
+        });
+
+        this.socket.on("connect_error", (error) => {
+            this.emit('socket_connection_error', error);
+        });
+
+        this.socket.on("reconnect_failed", (error) => {
+            this.emit('socket_connection_failed', error);
         });
 
         this.socket.on('event.port_opened', (port) => {
@@ -62,7 +76,7 @@ export class TransbankPOSWebSocket extends EventEmitter {
             let ts = Date.now();
             let eventName = method + ".response" + ts;
 
-            if (!this.isConnected && this.socket!==null) {
+            if (!this.isConnected || this.socket == null) {
                 reject("Debe conectarse para poder enviar mensajes: Puede conectarse con POS.connect()")
                 return
             }
@@ -154,18 +168,23 @@ export class TransbankPOSWebSocket extends EventEmitter {
 
     async doSale(amount, ticket, callback = null) {
         let params = { amount: amount, ticket: ticket }
-        if (typeof callback === 'function') {
+
+        if (typeof callback === 'function' && this.socket !== null) {
             this.socket.on('sale_status.response', callback)
         }
+
         let response = await this.send("sale", params)
         this.socket.off('sale_status.response', callback)
         return response;
     }
+
     async doMulticodeSale(amount, ticket, commerceCode = '0', callback = null) {
         let params = { amount: amount, ticket: ticket, commerceCode: commerceCode }
-        if (typeof callback === 'function') {
+
+        if (typeof callback === 'function' && this.socket !== null) {
             this.socket.on('multicode_sale_status.response', callback)
         }
+
         let response = await this.send("multicodeSale", params)
         this.socket.off('multicode_sale_status.response', callback)
         return response;

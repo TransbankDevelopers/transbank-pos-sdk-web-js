@@ -1,16 +1,16 @@
-name: NPM Package Release
+name: Build
 
 on:
     pull_request:
-      branches:
-        - main
-        - develop
-    release:
-      types: [created]
+      types: [opened, synchronize, reopened]
 jobs:
-    publish:
+    build:
         runs-on: ubuntu-latest
         steps:
+          - name: Cancel Previous Redundant Builds
+            uses: styfle/cancel-workflow-action@0.12.1
+            with:
+              access_token: ${{ secrets.GITHUB_TOKEN }}
           - name: Use checkout
             uses: actions/checkout@v4
             with:
@@ -18,28 +18,8 @@ jobs:
           - name: Use setup-node
             uses: actions/setup-node@v4
             with:
-                node-version: '16.x'
-                registry-url: 'https://registry.npmjs.org'
+                node-version: '20.x'
           - name: Install dependencies
             run: npm ci
           - name: Build
-            run: |
-              chmod +x package.sh
-              ./package.sh
-            env:
-              TRAVIS_TAG: ${{ github.event.release.tag_name }}
-          - name: npm publish
-            if: ${{ github.event_name == 'release' }}
-            run: npm publish
-            env:
-              NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
-          - name: Upload assets
-            if: ${{ github.event_name == 'release' }}
-            uses: actions/upload-release-asset@v1
-            env:
-              GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-            with:
-              upload_url: ${{ github.event.release.upload_url }}
-              asset_path: dist/pos.js
-              asset_name: pos.js
-              asset_content_type: text/javascript
+            run: npm run build
