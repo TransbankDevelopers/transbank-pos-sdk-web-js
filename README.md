@@ -32,7 +32,7 @@ POS.connect(ports).then(() => {
 })
 ```
 
-### Inscrustando un tag script
+### Incrustando un tag script
 Si no usas NPM
 ```html
 <script src="https://unpkg.com/transbank-pos-sdk-web@2/dist/pos.js"></script>
