@@ -8,9 +8,13 @@ on:
     release:
       types: [created]
 jobs:
-    publish:
+    build:
         runs-on: ubuntu-latest
         steps:
+          - name: Cancel Previous Redundant Builds
+            uses: styfle/cancel-workflow-action@0.12.1
+            with:
+              access_token: ${{ secrets.GITHUB_TOKEN }}
           - name: Use checkout
             uses: actions/checkout@v4
             with:
