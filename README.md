@@ -1,13 +1,13 @@
 # Transbank SDK Web - Javascript
 Este proyecto es parte del SDK Web para POS integrado.
-Este SDK, junto con [Este agente ](https://github.com/TransbankDevelopers/transbank-pos-sdk-web-agent) permiten conectar tu software web (punto de venta, etc) al POS.
+Este SDK, junto con [Este agente ](https://github.com/TransbankDevelopers/transbank-pos-sdk-web-agent2) permiten conectar tu software web (punto de venta, etc) al POS.
 
 Este README tiene las instrucciones para la versión 2.0 de este SDK. Para la versión 1.0 revisar los tags de este repositorio. 
 
 ## SDK Web POS Integrado
 Este SDK Web consta de dos partes: 
 
-[Agente](https://github.com/TransbankDevelopers/transbank-pos-sdk-web-agent): Este agente es un programa que se debe instalar e inicializar en el computador que tendrá el equipo POS conectado físicamente. Al instalar e inicializar este servicio, se creará un servidor de websockets local en el puerto `8090` que permitirá, a través del [SDK de Javascript](https://github.com/TransbankDevelopers/transbank-pos-sdk-web-js), poder enviar y recibir mensajes del equipo POS, de manera simple y transparente. 
+[Agente](https://github.com/TransbankDevelopers/transbank-pos-sdk-web-agent2): Este agente es un programa que se debe instalar e inicializar en el computador que tendrá el equipo POS conectado físicamente. Al instalar e inicializar este servicio, se creará un servidor de websockets local en el puerto `8090` que permitirá, a través del [SDK de Javascript](https://github.com/TransbankDevelopers/transbank-pos-sdk-web-js), poder enviar y recibir mensajes del equipo POS, de manera simple y transparente. 
 [SDK Javascript](https://github.com/TransbankDevelopers/transbank-pos-sdk-web-js) **(este repositorio)**: Este SDK se debe instalar en el software de caja (o cualquier software web que presente HTML, CSS y JS en un navegador web). Este SDK entrega una interfaz simple para conectarse con el cliente, de manera que se puedan mandar instrucciones al POS con un API fácil de usar. 
 
 
