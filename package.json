@@ -15,7 +15,13 @@
     "pos",
     "sdk"
   ],
-  "author": "Gonzalo De Spírito <gonzalo.despirito@continuum.cl>",
+  "author": {
+    "name": "Transbank Developers",
+    "email": "transbankdevelopers@continuum.cl"
+  },
+  "contributors": [
+    { "name": "Gonzalo De Spírito" }
+  ],
   "license": "BSD-3-Clause",
   "dependencies": {
     "socket.io-client": "^4.8.1",
