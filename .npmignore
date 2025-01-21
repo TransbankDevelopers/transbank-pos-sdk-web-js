@@ -4,3 +4,10 @@ dist/
 
 package-lock.json.bkp
 package.json.bkp
+
+index.html
+index.js
+.gitignore
+webpack.config.js
+src
+.github

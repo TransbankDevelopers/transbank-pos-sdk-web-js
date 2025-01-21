@@ -4,6 +4,14 @@ Todos los cambios notables a este proyecto serán documentados en este archivo.
 El formato está basado en [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 y este proyecto adhiere a [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [5.1.0] - 21-01-2025
+
+Esta versión es compatible con la versión 1.0.0 del [Agente Web](https://github.com/TransbankDevelopers/transbank-pos-sdk-web-agent2/releases/tag/1.0.0).
+
+### Agrega
+
+- Se agrega compatibilidad para poder usar el SDK con un tag script.
+
 ## [5.0.0] - 13-01-2025
 
 ### Agrega

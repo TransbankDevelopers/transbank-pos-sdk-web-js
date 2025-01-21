@@ -9,8 +9,8 @@ module.exports = [
       path: path.resolve(__dirname, "dist"),
       filename: "pos.js",
       library: "Transbank",
-      libraryTarget: "commonjs2",
-      umdNamedDefine: true
+      libraryTarget: "umd",
+      globalObject: "this"
     },
     module: {
       rules: [

@@ -53,7 +53,7 @@ Si no usas NPM
   })
 </script>
 ```
-Nota que la URL https://unpkg.com/transbank-pos-sdk-web@3/dist/pos.js cargará la ultima versión 3.x.x disponible. De esa forma te asegurarás de tener las últimas correcciones y nuevas funcionalidades (retrocompatibles) de manera automática.
+Nota que la URL https://unpkg.com/transbank-pos-sdk-web@5/dist/pos.js cargará la ultima versión 5.x.x disponible. De esa forma te asegurarás de tener las últimas correcciones y nuevas funcionalidades (retrocompatibles) de manera automática.
 En caso de que quieras definir manualmente la versión instalada, puedes cambiar el `@5` por algo como `@5.0.0`
 En caso de querer la última versión usar la URL https://unpkg.com/transbank-pos-sdk-web/dist/pos.js
 
@@ -143,4 +143,4 @@ En ese PR deben incluirse los siguientes cambios:
 1. Modificar el archivo `CHANGELOG.md` para incluir una nueva entrada (al comienzo) para `X.Y.Z` que explique en español los cambios **de cara al usuario del SDK**.
 2. Modificar el archivo package.json y modificar la versión.
 
-Luego de obtener aprobación del pull request, debe mezclarse a master e inmediatamente generar un release en GitHub con el tag `vX.Y.Z`. En la descripción del release debes poner lo mismo que agregaste al changelog.
+Luego de obtener aprobación del pull request, debe mezclarse a master e inmediatamente generar un release en GitHub con el tag `X.Y.Z`. En la descripción del release debes poner lo mismo que agregaste al changelog.
