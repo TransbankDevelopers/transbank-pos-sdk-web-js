@@ -1,6 +1,6 @@
 {
   "name": "transbank-pos-sdk-web",
-  "version": "5.0.1",
+  "version": "5.0.2",
   "description": "SDK Web Transbank POS",
   "main": "dist/pos.js",
   "module": "dist/pos.esm.js",
@@ -20,7 +20,9 @@
     "email": "transbankdevelopers@continuum.cl"
   },
   "contributors": [
-    { "name": "Gonzalo De Spírito" }
+    {
+      "name": "Gonzalo De Spírito"
+    }
   ],
   "license": "BSD-3-Clause",
   "dependencies": {
