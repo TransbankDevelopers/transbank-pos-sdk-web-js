@@ -53,7 +53,7 @@ Si no usas NPM
   })
 </script>
 ```
-Nota que la URL https://unpkg.com/transbank-pos-sdk-web@3/dist/pos.js cargará la ultima versión 3.x.x disponible. De esa forma te asegurarás de tener las últimas correcciones y nuevas funcionalidades (retrocompatibles) de manera automática.
+Nota que la URL https://unpkg.com/transbank-pos-sdk-web@5/dist/pos.js cargará la ultima versión 5.x.x disponible. De esa forma te asegurarás de tener las últimas correcciones y nuevas funcionalidades (retrocompatibles) de manera automática.
 En caso de que quieras definir manualmente la versión instalada, puedes cambiar el `@5` por algo como `@5.0.0`
 En caso de querer la última versión usar la URL https://unpkg.com/transbank-pos-sdk-web/dist/pos.js
 
